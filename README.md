@@ -46,7 +46,11 @@ php artisan passport:install
 PASSPORT_CLIENT_ID=2
 PASSPORT_CLIENT_SECRET=9Sq6i4OwsGBPyHUNkLqSdhzUhm95LxE9eFzmpc5X
 ```
-
+# 配置阿里云短信配置 .env
+```
+ALIYUN_ACCESS_KEY_ID=
+ALIYUN_ACCESS_KEY_SECRET=
+```
 5.运行调试
 ```
 php artisan serve

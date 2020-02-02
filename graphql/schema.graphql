@@ -3,6 +3,50 @@ scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date
 
 "A date string with format `Y-m-d`, e.g. `2011-05-23`."
 scalar Date @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date")
+"A datetime string with format `Y-m-d H:i:s`, e.g. `2018-01-01 13:00:00`."
+scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTime")
+
+"A date string with format `Y-m-d`, e.g. `2011-05-23`."
+scalar Date @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date")
+type Query {
+    me: User @auth @middleware(checks: ["auth:api"])
+}
+type Mutation {
+    "发送验证码"
+    send_sms(
+        input: SendSmsCodeInput!
+    ): SimpleRepsonse! @field(resolver: "Auth\\SendSmsCode")
+}
+input SendSmsCodeInput{
+    "手机号"
+    phone: String!
+}
+enum YesOrNoEnum{
+    "是"
+    Y
+    "否"
+    N
+}
+type User {
+    id: ID!
+    name: String!
+    email: String
+    phone: String!
+    id_card: String
+    avatar_url: String
+    role: Role
+    created_at: DateTime!
+    updated_at: DateTime!
+    create_group: YesOrNoEnum!
+    address: String
+    address_detail: String
+}
+
+
+type SimpleRepsonse {
+    status: String!
+    message: String
+}
 
 type Query {
     users: [User!]! @paginate(defaultCount: 10)
@@ -11,8 +55,9 @@ type Query {
 
 type User {
     id: ID!
-    name: String!
-    email: String!
+    name: String
+    phone: String!
+    email: String
     created_at: DateTime!
     updated_at: DateTime!
 }

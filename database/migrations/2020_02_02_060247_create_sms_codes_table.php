@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUsersTable extends Migration
+class CreateSmsCodesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,16 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('sms_codes', function (Blueprint $table) {
             $table->unsignedBigInteger('id')->primary();
-            $table->string('name');
             $table->string('phone',16)->default('')->comment('手机号');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
-            $table->softDeletes();
+            $table->string('code')->default('')->comment('验证码');
+            $table->dateTime('expired_at')->nullable()->comment('验证码过期时间');
             $table->timestamps();
+            $table->softDeletes();
+            $table->charset = 'utf8mb4';
+            $table->collation = 'utf8mb4_unicode_ci';
+            $table->engine = 'InnoDB';
         });
     }
 
@@ -33,6 +33,6 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('sms_codes');
     }
 }
