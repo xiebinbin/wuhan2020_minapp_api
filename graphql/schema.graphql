@@ -12,6 +12,10 @@ type Query {
     me: User @auth @middleware(checks: ["auth:api"])
 }
 type Mutation {
+    "验证码登录"
+    sms_login(
+        input: SmsLoginInput!
+    ): SmsLoginRepsonse! @field(resolver: "Auth\\SmsLogin")
     "发送验证码"
     send_sms(
         input: SendSmsCodeInput!
@@ -20,6 +24,12 @@ type Mutation {
 input SendSmsCodeInput{
     "手机号"
     phone: String!
+}
+input SmsLoginInput{
+    "手机号"
+    phone: String!
+    "验证码"
+    code: String!
 }
 enum YesOrNoEnum{
     "是"
@@ -47,11 +57,16 @@ type SimpleRepsonse {
     status: String!
     message: String
 }
-
-type Query {
-    users: [User!]! @paginate(defaultCount: 10)
-    user(id: ID @eq): User @find
+type SmsLoginDataRepsonse{
+    access_token: String!
+    user: User!
 }
+type SmsLoginRepsonse {
+    status: String!
+    message: String!
+    data: SmsLoginDataRepsonse!
+}
+
 
 type User {
     id: ID!

@@ -7,11 +7,12 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Kra8\Snowflake\HasSnowflakePrimary;
 use Overtrue\EasySms\PhoneNumber;
+use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
 {
     use SoftDeletes;
-    use HasSnowflakePrimary,Notifiable;
+    use HasSnowflakePrimary,Notifiable,HasApiTokens;
     
     public $incrementing = false;
     

@@ -45,6 +45,10 @@ php artisan passport:install
 # 根据安装信息配置.env
 PASSPORT_CLIENT_ID=2
 PASSPORT_CLIENT_SECRET=9Sq6i4OwsGBPyHUNkLqSdhzUhm95LxE9eFzmpc5X
+# 安装个人令牌
+php artisan passport:client --personal
+# 配置.env
+PERSONAL_ACCESS_CLIENT_ID=
 ```
 # 配置阿里云短信配置 .env
 ```
