@@ -2,14 +2,14 @@
 
 namespace App\GraphQL\Mutations\Auth;
 
-use App\Models\SmsCode;
-use App\Models\User;
-use App\Notifications\VerificationCode;
 use GraphQL\Type\Definition\ResolveInfo;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Validator;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
-class SendSmsCode
+use App\Models\User;
+use Illuminate\Support\Facades\Validator;
+use App\Models\SmsCode;
+use Illuminate\Support\Carbon;
+
+class SmsLogin
 {
     /**
      * Return a value for the field.
@@ -26,36 +26,40 @@ class SendSmsCode
         $data = $args['input'];
         $this->validate($data);
         $user = User::where('phone',$data['phone'])->first();
-        if(!$user){
-            
-            $data['name'] = '';
-            $data['email'] = '';
-            $data['password'] = bcrypt('123456');
-            $user = User::create($data);
-        }
-        //查询2分钟内是否已经发送过
-        $oldCode = SmsCode::where('phone',$data['phone'])->where('expired_at','>',Carbon::now()->format('Y-m-d H:i:s'))->first();
-        if ($oldCode){
-            throw new \Exception('两分钟后在重试!');
-        }
-        //发送验证码
-        $user->notify(new VerificationCode());
+        // 登录 生成token
+        $token = $user->createToken('minapp',['*'])->accessToken;
         return [
             'status'=> '200',
-            'message'=>'发送成功'
+            'message'=>'登录成功!',
+            'data'=>[
+                'access_token'=>$token,
+                'user'=>$user
+            ]
         ];
     }
     public function validate($data){
         $rules = [
             'phone'=>['required','regex:/^\\d{1}\\d{10}$/'],
+            'code'=>['required','regex:/^\\d{1}\\d{5}$/'],
         ];
         $messages = [
             'phone.required'=>'手机号不能为空',
             'phone.regex'=>'手机号为11位',
+            'code.required'=>'验证码不能为空',
+            'code.regex'=>'手机号为6位',
         ];
         $validate = Validator::make($data,$rules,$messages);
         if ($validate->fails()) {
             throw new \InvalidArgumentException($validate->messages()->first());
+        }
+        $oldCode = SmsCode::where('phone',$data['phone'])->where('expired_at','>',Carbon::now()->format('Y-m-d H:i:s'))->first();
+        if ($oldCode){
+            if ($oldCode->code !== $data['code']){
+                throw new \Exception('验证码不正确!');
+            }
+            $oldCode->delete();
+        } else {
+            throw new \Exception('请先发送验证码!');
         }
         return true;
     }
