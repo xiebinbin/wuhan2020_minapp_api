@@ -23,7 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('province',16)->nullable()->default('')->comment('省');
             $table->string('city',16)->nullable()->default('')->comment('市');
             $table->string('signature',255)->nullable()->default('')->comment('个性签名');
-            $table->string('status',4)->default('FIRST_LOGIN')->comment('状态FIRST_LOGIN首次登录NORMAL正常');
+            $table->string('status',32)->nullable()->default('FIRST_LOGIN')->comment('状态FIRST_LOGIN首次登录NORMAL正常');
             $table->string('email')->default('')->index('email');
             $table->string('contact_email',255)->nullable()->default('')->comment('联系邮箱');
             $table->timestamp('email_verified_at')->nullable();
