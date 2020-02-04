@@ -13,4 +13,7 @@ class SmsCode extends Model
     protected $fillable = [
         'phone', 'code', 'expired_at'
     ];
+    protected $casts = [
+        'expired_atgft v6sa' => 'datetime'
+    ];
 }

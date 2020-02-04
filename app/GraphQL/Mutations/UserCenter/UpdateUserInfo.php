@@ -1,15 +1,12 @@
 <?php
 
-namespace App\GraphQL\Mutations\Auth;
+namespace App\GraphQL\Mutations\UserCenter;
 
-use App\Models\SmsCode;
-use App\Models\User;
-use App\Notifications\VerificationCode;
 use GraphQL\Type\Definition\ResolveInfo;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Validator;
 use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
-class SendSmsCode
+
+class UpdateUserInfo
 {
     /**
      * Return a value for the field.
@@ -25,35 +22,24 @@ class SendSmsCode
         //查询用户是否存在
         $data = $args['input'];
         $this->validate($data);
-        $user = User::where('phone',$data['phone'])->first();
-        if(!$user){
-            $data['name'] = '';
-            $data['email'] = '';
-            $data['password'] = bcrypt('123456');
-            $data['stauts']= 'FIRST_LOGIN';
-            $data['role'] ='其他';
-            $data['contact_number'] =$data['phone'];
-            $user = User::create($data);
-        }
-        //查询2分钟内是否已经发送过
-        $oldCode = SmsCode::where('phone',$data['phone'])->where('created_at','>',Carbon::now()->addMinutes(2)->format('Y-m-d H:i:s'))->first();
-        if ($oldCode){
-            throw new \Exception('两分钟后在重试!');
-        }
-        //发送验证码
-        $user->notify(new VerificationCode());
+        $user = auth()->user();
+        $user->update($data);
         return [
-            'status'=> '200',
-            'message'=>'发送成功'
+            'status'=> 200,
+            'message'=>'更新成功!',
         ];
     }
     public function validate($data){
         $rules = [
-            'phone'=>['required','regex:/^\\d{1}\\d{10}$/'],
+            'name'=>['required'],
+            'avatar_url'=>['required','url'],
+            'role'=>['required'],
         ];
         $messages = [
-            'phone.required'=>'手机号不能为空',
-            'phone.regex'=>'手机号为11位',
+            'name.required'=>'姓名不能为空',
+            'avatar_url.required'=>'头像不能为空',
+            'avatar_url.url'=>'头像地址格式不正确',
+            'role.required'=>'身份不能为空',
         ];
         $validate = Validator::make($data,$rules,$messages);
         if ($validate->fails()) {

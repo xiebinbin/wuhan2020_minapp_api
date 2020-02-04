@@ -44,8 +44,9 @@ class VerificationCode extends Notification
             'expired_at'=>Carbon::now()->add('minute',15)->format('Y-m-d H:i:s')
         ];
         SmsCode::create($data);
-        return (new EasySmsMessage)
-        ->setTemplate('SMS_164278643')
-        ->setData(['code' => $data['code']]);
+        return true;
+//         return (new EasySmsMessage)
+//         ->setTemplate('SMS_164278643')
+//         ->setData(['code' => $data['code']]);
     }
 }

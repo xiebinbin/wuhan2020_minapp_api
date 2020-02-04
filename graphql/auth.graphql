@@ -1,0 +1,81 @@
+extend type Query {
+    me: User @auth @middleware(checks: ["auth:api"])
+}
+extend type Mutation {
+    "验证码登录"
+    sms_login(
+        input: SmsLoginInput!
+    ): SmsLoginRepsonse! @field(resolver: "Auth\\SmsLogin")
+    "发送验证码"
+    send_sms(
+        input: SendSmsCodeInput!
+    ): SimpleRepsonse! @field(resolver: "Auth\\SendSmsCode")
+    "退出登录"
+    sign_out: SimpleRepsonse! @field(resolver: "Auth\\SignOut") @middleware(checks: ["auth:api"])
+    "更新用户信息"
+    update_user_info(input: UpdateUserInfoInput!): SimpleRepsonse! @field(resolver: "UserCenter\\UpdateUserInfo") @middleware(checks: ["auth:api"])
+}
+input SendSmsCodeInput{
+    "手机号"
+    phone: String!
+}
+input SmsLoginInput{
+    "手机号"
+    phone: String!
+    "验证码"
+    code: String!
+}
+input UpdateUserInfoInput{
+    "用户名"
+    name: String!
+    "联系电话"
+    contact_number: String
+    "联系邮箱"
+    contact_email: String
+    "头像地址"
+    avatar_url: String!
+    "身份"
+    role: String!
+    "地区-省"
+    province: String!
+    "地区-市"
+    city: String!
+    "个性签名"
+    signature: String
+}
+
+type User {
+    id: ID!
+    name: String!
+    phone: String!
+    contact_number: String
+    contact_email: String
+    avatar_url: String
+    role: String
+    province: String
+    city: String
+    signature: String
+    "状态FIRST_LOGIN首次登录NORMAL正常"
+    status: String
+    updated_at: DateTime!
+}
+
+type SmsLoginDataRepsonse{
+    access_token: String!
+    user: User!
+}
+type SmsLoginRepsonse {
+    status: String!
+    message: String!
+    data: SmsLoginDataRepsonse!
+}
+
+
+type User {
+    id: ID!
+    name: String
+    phone: String!
+    email: String
+    created_at: DateTime!
+    updated_at: DateTime!
+}
