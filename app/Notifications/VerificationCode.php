@@ -45,8 +45,8 @@ class VerificationCode extends Notification
         ];
         SmsCode::create($data);
         return true;
-//         return (new EasySmsMessage)
-//         ->setTemplate('SMS_164278643')
-//         ->setData(['code' => $data['code']]);
+        return (new EasySmsMessage)
+        ->setTemplate('SMS_183155747')
+        ->setData(['code' => $data['code']]);
     }
 }
