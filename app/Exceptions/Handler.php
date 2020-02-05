@@ -52,6 +52,10 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        return parent::render($request, $exception);
+        $status = $exception->getCode() > 500 ? 500 : $exception->getCode();
+        return response()->json([
+            'code'=>$exception->getCode(),
+            'message'=>$exception->getMessage(),
+        ],$status);
     }
 }

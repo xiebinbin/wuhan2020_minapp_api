@@ -26,13 +26,13 @@ return [
     'gateways' => [
         // 失败日志
         'errorlog' => [
-            'channel' => 'smslog',
+            'file' => storage_path('logs').'error_sms.log',
         ],
         
         'aliyun' => [
             'access_key_id' => env('ALIYUN_ACCESS_KEY_ID', ''),
             'access_key_secret' => env('ALIYUN_ACCESS_KEY_SECRET',''),
-            'sign_name' => '知雀优加',
+            'sign_name' => env('ALIYUN_SMS_SIGN_NAME',''),
         ],
         
         // ...

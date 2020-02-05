@@ -9,6 +9,7 @@
 	"license" : "MIT",
 	"require" : {
 		"php": "^7.2",
+		"barryvdh/laravel-cors": "^1.0",
 		"fideloper/proxy": "^4.0",
 		"jacobcyl/ali-oss-storage": "^2.1",
 		"kra8/laravel-snowflake": "^1.2",
