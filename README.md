@@ -37,7 +37,53 @@ DB_PASSWORD=
 3.配置数据库相关信息
 ```
 php artisan key:generate
-php artisan migrate #初始化数据库
+p-7u？hp artisan migrate #初始化数据库
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ```
 4.passport配置
 ```
@@ -46,7 +92,7 @@ php artisan passport:install
 PASSPORT_CLIENT_ID=2
 PASSPORT_CLIENT_SECRET=9Sq6i4OwsGBPyHUNkLqSdhzUhm95LxE9eFzmpc5X
 # 安装个人令牌
-php artisan passport:client --personal
+809
 # 配置.env
 PERSONAL_ACCESS_CLIENT_ID=
 ```
