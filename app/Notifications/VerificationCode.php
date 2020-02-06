@@ -41,7 +41,7 @@ class VerificationCode extends Notification
         $data = [
             'phone'=>$notifiable->phone,
             'code'=>str_pad(rand(0,999999), 6,'0'),
-            'expired_at'=>Carbon::now()->add('minute',15)->format('Y-m-d H:i:s')
+            'expired_at'=>Carbon::now()->add('minute',30)->format('Y-m-d H:i:s')
         ];
         SmsCode::create($data);
         return (new EasySmsMessage)

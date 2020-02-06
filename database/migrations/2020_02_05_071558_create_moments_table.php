@@ -24,8 +24,8 @@ class CreateMomentsTable extends Migration
             $table->string('province',32)->default('')->comment('地区省')->index('province');
             $table->string('city',32)->default('')->comment('地区市')->index('city');
             $table->string('address_detail',255)->default('')->comment('详细地址');
-            $table->text('information')->default('')->comment('情况介绍');
-            $table->text('important_information')->default('')->comment('紧缺物资');
+            $table->text('information')->comment('情况介绍');
+            $table->text('important_information')->comment('重要信息');
             $table->timestamps();
             $table->softDeletes();
             $table->charset = 'utf8mb4';

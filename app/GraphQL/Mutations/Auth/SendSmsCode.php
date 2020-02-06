@@ -36,7 +36,7 @@ class SendSmsCode
             $user = User::create($data);
         }
         //查询2分钟内是否已经发送过
-        $oldCode = SmsCode::where('phone',$data['phone'])->where('created_at','>',Carbon::now()->addMinutes(2)->format('Y-m-d H:i:s'))->first();
+        $oldCode = SmsCode::where('phone',$data['phone'])->where('created_at','<=',Carbon::now()->addMinutes(2)->format('Y-m-d H:i:s'))->first();
         if ($oldCode){
             throw new \Exception('两分钟后在重试!');
         }
